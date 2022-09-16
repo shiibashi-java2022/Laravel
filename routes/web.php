@@ -22,7 +22,7 @@ Route::post('/books/{book}',[BooksController::class,'delete']);
 /**
  * 更新画面
  */
-Route::post('/booksedit/{books}',[BooksController::class,'showUpdate']);
+Route::post('/booksedit/{books}',[BooksController::class,'edit']);
 /**
  * 更新処理
  */

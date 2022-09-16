@@ -14,7 +14,7 @@
         <!-- バリデーションエラーの表示に使用-->
 
         <!-- 本のタイトル -->
-        <form action="{{ url('books') }}" method="POST" class="form-horizontal">
+        <form enctype="multipart/form-data" action="{{ url('books') }}" method="POST" class="form-horizontal">
             @csrf
             <div class="form-row">
                 <div class="form-group col-md-6">
@@ -37,6 +37,10 @@
                     <label for="published" class="col-sm-3 control-label">公開日</label>
                     <input type="date" name="published" class="form-control">
                 </div>
+            </div>
+            <div class="col-sm-6">
+                <label>画像</label>
+                <input type="file" name="item_img">
             </div>
 
             <!-- 本 登録ボタン -->
@@ -70,8 +74,11 @@
                         @foreach ($books as $book)
                             <tr>
                                 <!-- 本タイトル -->
+                                <form enctype="multipart/form-data" action="{{url('books')}}"
+                                method="POST" class="form-horizontal"></form>
                                 <td class="table-text">
                                     <div>{{ $book->item_name }}</div>
+                                    <div><img src="upload/{{$book->item_img}}" width="100"></div>
                                 </td>
 
                                 <!-- 本: 更新ボタン -->

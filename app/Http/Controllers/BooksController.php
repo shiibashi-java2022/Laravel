@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Book;
 use Illuminate\Support\Facades\Validator;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 
 class BooksController extends Controller{
 
@@ -17,7 +17,9 @@ class BooksController extends Controller{
     * 本ダッシュボード表示
     */
     public function index() {
-        $books = Book::orderBy('created_at', 'asc') -> paginate(3);
+        $books = Book::where('user_id',Auth::user()->id)
+        -> orderBy('create_at','asc')
+        -> paginate(3);
         return view('books', [
             'books' => $books
         ]);
@@ -65,12 +67,21 @@ class BooksController extends Controller{
                 ->withInput()
                 ->withErrors($validator);
         }
-
+        $file = $request->file('item_img');
+        if(!empty($file)){
+            $filename = $file->getClientOriginalName();//ファイル名を取得
+            $file->move('./upload/',$filename);//ファイルを移動
+        }else{
+            $filename = "";
+        }
+        
         // Eloquentモデル（登録処理）
         $books = new Book;
+        $books->user_id = Auth::user()->id;
         $books->item_name = $request->item_name;
         $books->item_number =$request->item_number;
         $books->item_amount =$request->item_amount;
+        $books->item_img = $filename;
         $books->published = $request->published;
         $books->save(); 
         return redirect('/') -> with('message','本登録が完了しました');
@@ -85,10 +96,11 @@ class BooksController extends Controller{
     }
 
     //更新画面
-    public function showUpdate(Book $books) {
-     //{books}id 値を取得 => Book $books id 値の1レコード取得
+    public function edit($book_id) {
+     $books = Book::where('user_id',Auth::user()->id)->find($book_id);
      return view('booksedit', ['book' => $books]);
     }
+
 
     
 }

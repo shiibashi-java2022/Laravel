@@ -19,6 +19,7 @@ return new class extends Migration
             $table->String('item_name');
             $table->String('item_number');
             $table->String('item_amount');
+            $table->String('item_img');
             $table->String('published');
             $table->timestamps();
         });
