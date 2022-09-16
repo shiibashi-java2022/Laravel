@@ -8,11 +8,16 @@ use Illuminate\Support\Facades\Validator;
 use Auth;
 
 class BooksController extends Controller{
+
+    //コンストラクタ
+    public function __construct(){
+        $this -> middleware('auth');
+    }
     /** 
     * 本ダッシュボード表示
     */
     public function index() {
-        $books = Book::orderBy('created_at', 'asc')->paginate(3);
+        $books = Book::orderBy('created_at', 'asc') -> paginate(3);
         return view('books', [
             'books' => $books
         ]);
@@ -68,7 +73,7 @@ class BooksController extends Controller{
         $books->item_amount =$request->item_amount;
         $books->published = $request->published;
         $books->save(); 
-        return redirect('/');
+        return redirect('/') -> with('message','本登録が完了しました');
     }
 
     /**

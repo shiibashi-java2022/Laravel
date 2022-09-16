@@ -2,11 +2,12 @@
 <!-- resources/views/books.blade.php -->
 @extends('layouts.app')
 @section('content')
-    <!-- Bootstrapの定形コード… -->
-    <div class="card-body">
-        <div class="card-title">
-            本のタイトル
-        </div>
+<!-- Bootstrapの定形コード… -->
+<div class="card-body">
+    <div class="card-title">
+        
+        本のタイトル
+    </div>
 
         <!-- バリデーションエラーの表示に使用-->
         @include('common.errors')
@@ -48,8 +49,11 @@
             </div>
         </form>
     </div>
-
-
+    @if(session('message'))
+        <div class="alert alert-success">
+            {{session('message')}}
+        </div>
+    @endif
     <!-- Book: 既に登録されてる本のリスト -->
      <!-- 現在の本 -->
     @if (count($books) > 0)
@@ -99,11 +103,6 @@
 
             </div>
         </div>
-        <div class="row">
-            <div class="col-md-4 offset-md-4">
-                {{ $books->links()}}
-            </div>
-       </div>
     @endif
 
 @endsection
